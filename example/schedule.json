@@ -1,0 +1,20 @@
+{
+  "schedules": [
+    {
+      "dag_id": "test1",
+      "schedule_interval": "@hourly",
+      "project_id": "dataflow-airflow",
+      "template": "gs://pubsub-to-gcs-dataflow-templates/PubSubToGCS_v1",
+      "job_name": "pubsub-to-gcs-v1",
+      "parameters": {
+        "suffix": "world"
+      },
+      "location": "us-central1",
+      "environment": {
+        "tempLocation": "gs://pubsub-to-gcs-artifacts/temp/v1",
+        "enableStreamingEngine": true,
+        "zone": "us-central1-a"
+      }
+    }
+  ]
+}

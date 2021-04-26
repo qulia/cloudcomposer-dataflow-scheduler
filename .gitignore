@@ -1,0 +1,6 @@
+/.idea/
+/example/scripts/.env/
+/airflow-dataflow-scheduler.iml
+/example/scripts/_env/
+
+.DS_Store
