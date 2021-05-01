@@ -17,9 +17,11 @@ with models.DAG(
         bash_command="echo Triggered from GCF: {{ dag_run.conf }}",
         dag=dag_runner)
 
+
     def set_schedules(**kwargs):
         schedule_conf = kwargs['dag_run'].conf
         Variable.set("schedule_conf", schedule_conf, serialize_json=True)
+
 
     update_schedule_var = PythonOperator(
         task_id='update_schedule_var',
@@ -27,8 +29,3 @@ with models.DAG(
         dag=dag_runner,
         provide_context=True)
     print_content >> update_schedule_var
-
-
-
-
-

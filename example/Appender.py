@@ -26,28 +26,30 @@ from apache_beam.options.value_provider import RuntimeValueProvider
 
 from apache_beam.io import WriteToText
 
+
 class UserOptions(PipelineOptions):
     @classmethod
     def _add_argparse_args(cls, parser):
         parser.add_argument(
             "--input_path"
-            )
+        )
         parser.add_argument(
             "--output_path",
             help="Path of the output GCS file including the prefix.",
         )
         parser.add_value_provider_argument(
-            '--suffix', 
+            '--suffix',
             type=str)
+
 
 class AppendFn(DoFn):
     def __init__(self, suffix):
-      self.suffix = suffix
+        self.suffix = suffix
 
     def process(self, word):
-      suffix_str = self.suffix.get()
-      logging.info(f"contents: {word} {suffix_str}")
-      yield f"{word} {suffix_str}"
+        suffix_str = self.suffix.get()
+        logging.info(f"contents: {word} {suffix_str}")
+        yield f"{word} {suffix_str}"
 
 
 def run():
@@ -57,14 +59,14 @@ def run():
     user_options = pipeline_options.view_as(UserOptions)
     with Pipeline(options=pipeline_options) as pipeline:
         (
-            pipeline
-            # Because `timestamp_attribute` is unspecified in `ReadFromPubSub`, Beam
-            # binds the publish time returned by the Pub/Sub server for each message
-            # to the element's timestamp parameter, accessible via `DoFn.TimestampParam`.
-            # https://beam.apache.org/releases/pydoc/current/apache_beam.io.gcp.pubsub.html#apache_beam.io.gcp.pubsub.ReadFromPubSub
-            | "Read from GCS" >> io.ReadFromText(user_options.input_path)
-            | "Append suffix" >> ParDo(AppendFn(user_options.suffix))
-            | "Write to GCS" >> WriteToText(user_options.output_path)
+                pipeline
+                # Because `timestamp_attribute` is unspecified in `ReadFromPubSub`, Beam
+                # binds the publish time returned by the Pub/Sub server for each message
+                # to the element's timestamp parameter, accessible via `DoFn.TimestampParam`.
+                # https://beam.apache.org/releases/pydoc/current/apache_beam.io.gcp.pubsub.html#apache_beam.io.gcp.pubsub.ReadFromPubSub
+                | "Read from GCS" >> io.ReadFromText(user_options.input_path)
+                | "Append suffix" >> ParDo(AppendFn(user_options.suffix))
+                | "Write to GCS" >> WriteToText(user_options.output_path)
         )
 
 
@@ -73,4 +75,3 @@ if __name__ == "__main__":
 
     run()
 # [END pubsub_to_gcs]
-

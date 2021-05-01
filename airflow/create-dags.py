@@ -56,8 +56,3 @@ if 'schedules' in schedule_conf:
             parameters=sched['parameters'],
             location=sched['location'],
         )
-
-
-
-
-
