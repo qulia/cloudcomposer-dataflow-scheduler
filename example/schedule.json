@@ -1,18 +1,20 @@
 {
   "schedules": [
     {
-      "dag_id": "test1",
+      "dag_id": "appender-batch2",
       "schedule_interval": "@hourly",
+      "catchup": true,
+      "start_date": "2021-05-01 01:47",
+      "end_date": "2031-05-01 01:47",
       "project_id": "dataflow-airflow",
-      "template": "gs://pubsub-to-gcs-dataflow-templates/PubSubToGCS_v1",
-      "job_name": "pubsub-to-gcs-v1",
+      "template": "gs://appender-dataflow-templates/Appender_V1",
+      "job_name": "appender-v1",
       "parameters": {
         "suffix": "world"
       },
       "location": "us-central1",
       "environment": {
-        "tempLocation": "gs://pubsub-to-gcs-artifacts/temp/v1",
-        "enableStreamingEngine": true,
+        "tempLocation": "gs://appender-artifacts/temp/v1",
         "zone": "us-central1-a"
       }
     }
