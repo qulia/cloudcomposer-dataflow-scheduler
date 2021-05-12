@@ -14,7 +14,7 @@ with models.DAG(
     # Cloud Storage object change.
     print_content = BashOperator(
         task_id='print_info',
-        bash_command="echo Triggered from GCF: {{ dag_run.conf }}",
+        bash_command="echo Info: {{ dag_run.conf }}",
         dag=dag_runner)
 
 
